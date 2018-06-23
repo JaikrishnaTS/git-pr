@@ -7,7 +7,6 @@ USAGE="<PR number>"
 
 source "$(git --exec-path)/git-sh-setup"
 
-
 function _rmbranch_pr() {
     if [[ $# == 1 ]]; then
         pr_no=$1

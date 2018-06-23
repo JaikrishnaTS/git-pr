@@ -9,7 +9,6 @@ USAGE="<remote> <PR number> [<base>]"
 
 source "$(git --exec-path)/git-sh-setup"
 
-
 function _checkout_pr() {
     if [[ $# == 3 || $# == 2 ]]; then
         remote=$1
