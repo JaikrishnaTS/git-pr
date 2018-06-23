@@ -1,17 +1,27 @@
 #!/bin/bash
 
+SUBDIRECTORY_OK=Yes
 CONFIG_PREFIX="pr."
+CONFIG_DEFAULT_BASE="${CONFIG_PREFIX}defaultbase"
+DEFAULT_BASE="master"
 LOCAL_BRANCH_PREFIX="PR"
-USAGE="<remote> <base> <PR number>"
+USAGE="<remote> <PR number> [<base>]"
 
 source "$(git --exec-path)/git-sh-setup"
 
 
 function _checkout_pr() {
-    if [[ $# == 3 ]]; then
+    if [[ $# == 3 || $# == 2 ]]; then
         remote=$1
-        base=$2
-        pr_no=$3
+        pr_no=$2
+        if [[ $# == 2 ]]; then
+            base=$(git config ${CONFIG_DEFAULT_BASE} 2> /dev/null)
+            if [[ $? != 0 ]]; then
+                base=${DEFAULT_BASE}
+            fi
+        else
+            base=$3
+        fi
         local_branch=${LOCAL_BRANCH_PREFIX}${pr_no}
 
         # The same can be used for updating the branch or changing the base
