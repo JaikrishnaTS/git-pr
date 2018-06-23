@@ -1,0 +1,30 @@
+#!/bin/bash
+
+CONFIG_PREFIX="pr."
+LOCAL_BRANCH_PREFIX="PR"
+USAGE="<PR number>"
+
+source "$(git --exec-path)/git-sh-setup"
+
+
+function _rmbranch_pr() {
+    if [[ $# == 1 ]]; then
+        pr_no=$1
+        local_branch=${LOCAL_BRANCH_PREFIX}${pr_no}
+        current_branch=$(git symbolic-ref --short HEAD)
+        if [ ${current_branch} == ${local_branch} ]; then
+            die "Cannot delete while the current branch is checked out. Please switch to another branch"
+        fi
+
+        if ! git config --unset ${CONFIG_PREFIX}${local_branch}.base
+        then
+            die "No such PR number ${pr_no} known to git-pr"
+        fi
+        git branch -D ${local_branch}
+        git config --remove-section ${CONFIG_PREFIX}${local_branch}
+    else
+        usage
+    fi
+}
+
+_rmbranch_pr $1

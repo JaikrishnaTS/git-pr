@@ -1,0 +1,35 @@
+#!/bin/bash
+
+CONFIG_PREFIX="pr."
+LOCAL_BRANCH_PREFIX="PR"
+USAGE="<remote> <base> <PR number>"
+
+source "$(git --exec-path)/git-sh-setup"
+
+
+function _checkout_pr() {
+    if [[ $# == 3 ]]; then
+        remote=$1
+        base=$2
+        pr_no=$3
+        local_branch=${LOCAL_BRANCH_PREFIX}${pr_no}
+
+        # The same can be used for updating the branch or changing the base
+        if ! git fetch --update-head-ok ${remote} pull/${pr_no}/head:${local_branch}
+        then
+            die "No such PR number ${pr_no} on remote ${remote}"
+        fi
+        git checkout ${local_branch}
+        config_key=${CONFIG_PREFIX}${local_branch}.base
+        if ! git config ${config_key} > /dev/null
+        then
+            git config --add ${config_key} ${base}
+        else
+            git config --replace-all ${config_key} ${base}
+        fi
+    else
+        usage
+    fi
+}
+
+_checkout_pr $1 $2 $3

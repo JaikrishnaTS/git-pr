@@ -1,0 +1,26 @@
+#!/bin/bash
+
+CONFIG_PREFIX="pr."
+LOCAL_BRANCH_PREFIX="PR"
+USAGE=""
+
+source "$(git --exec-path)/git-sh-setup"
+
+function _show_pr() {
+    if [[ $# == 0 ]]; then
+        current_branch=$(git symbolic-ref --short HEAD)
+        if [ ${current_branch:0:2} != ${LOCAL_BRANCH_PREFIX} ]; then
+            die "Current branch does not look like a PR branch"
+        fi
+        base_branch=$(git config ${CONFIG_PREFIX}${current_branch}.base)
+        if [ $? -ne 0 ]; then
+            die "${current_branch} is not a known branch to git-pr"
+        fi
+        echo "Comparing current branch against local branch <${base_branch}>"
+        git request-pull ${base_branch} ./
+    else
+        usage
+    fi
+}
+
+_show_pr

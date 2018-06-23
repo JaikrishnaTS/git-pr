@@ -1,0 +1,21 @@
+#!/bin/bash
+
+CONFIG_PREFIX="pr."
+LOCAL_BRANCH_PREFIX="PR"
+USAGE="[<options to git-diff>]"
+
+source "$(git --exec-path)/git-sh-setup"
+
+function _diff_pr() {
+    current_branch=$(git symbolic-ref --short HEAD)
+    if [ ${current_branch:0:2} != ${LOCAL_BRANCH_PREFIX} ]; then
+        die "Current branch does not look like a PR branch"
+    fi
+    base_branch=$(git config ${CONFIG_PREFIX}${current_branch}.base)
+    if [ $? -ne 0 ]; then
+        die "${current_branch} is not a known branch to git-pr"
+    fi
+    git diff ${base_branch} $@
+}
+
+_diff_pr $@
