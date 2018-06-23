@@ -17,23 +17,26 @@ Commands
 
 The tool contains the following commands
 
-``pr-checkout <remote> <base> <PR number>``
+``pr-checkout <remote> <PR number> [<base>]``
 -------------------------------------------
 
 Checkout the PR number ``<PR number>`` from repository at ``<remote>``.
-The ``<base>`` is the base branch that the PR is trying to merge onto. 
+The ``<base>`` is the base branch that the PR is trying to merge onto. If not
+specified, base will default to ``master`` branch.
 
 The changes will be checked out locally into a branch called ``PR<number>``
 
 Use the same command to fetch changes when the PR is updated with more commits
 or when you need to change the branch.
 
+Example: ``git pr-checkout origin master 94``
+
 .. note::
     The base branch can be obtained from web UI easily. It is also possible to
     programmatically get the base branch by using the Github API but that
     requires an access token setup in the machine.
-
-Example: ``git pr-checkout origin master 94``
+    The default base branch name can be set with 
+    ``git config --add pr.defaultbase <name>``
 
 
 ``pr-show``
