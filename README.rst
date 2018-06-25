@@ -10,7 +10,7 @@ Installation
 Clone the repository and copy the contents of the ``bin/`` directory to 
 ``.local/bin`` or anywhere in your ``$PATH``.
 
-``mkdir -p .local/bin; cp -r bin/* .local/bin/``
+``mkdir -p .local/bin; cp bin/* .local/bin/``
 
 Commands
 ========
@@ -29,7 +29,8 @@ The changes will be checked out locally into a branch called ``PR<number>``
 Use the same command to fetch changes when the PR is updated with more commits
 or when you need to change the branch.
 
-Example: ``git pr-checkout origin master 94``
+Example: ``git pr-checkout origin 94`` for any PR to ``master``
+Example: ``git pr-checkout origin 94 develop`` for other branches
 
 .. note::
     The base branch can be obtained from web UI easily. It is also possible to
