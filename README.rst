@@ -8,9 +8,12 @@ Installation
 ============
 
 Clone the repository and copy the contents of the ``bin/`` directory to 
-``.local/bin`` or anywhere in your ``$PATH``.
+anywhere in your ``$PATH``.
 
-``mkdir -p .local/bin; cp bin/* .local/bin/``
+The suggested location is ``.local/bin`` but first verify it's available in
+``$PATH`` with ``grep -E "$HOME/\.local/bin" <<< $PATH``
+
+``mkdir -p $HOME/.local/bin; cp bin/* $HOME/.local/bin/``
 
 Commands
 ========
